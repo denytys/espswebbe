@@ -7,7 +7,7 @@ if (!function_exists('generateJWT')) {
     function generateJWT($payload, $secret = "rahasia_s3cret", $exp = 3600)
     {
         $issuedAt = time();
-        $expire = $issuedAt  + (60 * 60);
+        $expire = $issuedAt  + $exp;
         $payload['iat'] = $issuedAt;
         $payload['exp'] = $expire;
 
