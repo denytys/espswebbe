@@ -1,14 +1,9 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /esps-be/
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L]
 
-    # Kalau request OPTIONS, tetap teruskan ke index.php
-    RewriteCond %{REQUEST_METHOD} OPTIONS
-    RewriteRule ^(.*)$ index.php [L]
+<FilesMatch "\.(env|json|log|sql|bak|old|backup|phpinfo\.php)$">
+    Require all denied
+</FilesMatch>
 
-    # Route biasa CodeIgniter
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L]
-
-</IfModule>

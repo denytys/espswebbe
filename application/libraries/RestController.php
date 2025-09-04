@@ -257,21 +257,21 @@ class RestController extends \CI_Controller
         parent::__construct();
 
         // ===== CORS FIX GLOBAL (untuk semua endpoint turunan) =====
-        $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-        $allowed_origins = ['http://localhost:5173']; // Tambahkan domain frontend kamu
+        // $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+        // $allowed_origins = ['http://localhost:5173']; // Tambahkan domain frontend kamu
 
-        if (in_array($origin, $allowed_origins)) {
-            header("Access-Control-Allow-Origin: $origin");
-        }
+        // if (in_array($origin, $allowed_origins)) {
+        //     header("Access-Control-Allow-Origin: $origin");
+        // }
 
-        header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+        // header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With");
+        // header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
         // Tangani preflight OPTIONS agar tidak error
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            http_response_code(200);
-            exit();
-        }
+        // if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        //     http_response_code(200);
+        //     exit();
+        // }
 
         // Set the default value of global xss filtering. Same approach as CodeIgniter 3
         $this->_enable_xss = ($this->config->item('global_xss_filtering') === true);
