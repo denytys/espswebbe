@@ -14,7 +14,7 @@ class M_inout extends CI_Model
 
     public function getEcertOut()
     {
-        return $this->db->where('type', 'ecertout')->order_by('tgl_cert', 'DESC')->get('outgoing_certificates')->result();
+        return $this->db->where('type', 'eahout')->order_by('tgl_cert', 'DESC')->get('outgoing_certificates')->result();
     }
 
     public function getEphytoOut()

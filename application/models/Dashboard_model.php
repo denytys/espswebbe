@@ -15,8 +15,8 @@ class Dashboard_model extends CI_Model
                 $table = 'ephyto_in';
                 $dateField = 'tgl_cert';
                 break;
-            case 'ecertout':
-                $table = 'ecert_out';
+            case 'eahout':
+                $table = 'eah_out';
                 $dateField = 'tgl_cert';
                 break;
             case 'ephytoout':
@@ -40,7 +40,7 @@ class Dashboard_model extends CI_Model
     public function getEcertIn()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, tujuan')
+            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, tujuan, id_cert, xmlsigned')
             ->from('ecert_in')
             ->order_by('tgl_cert', 'DESC')
             ->get();
@@ -54,7 +54,7 @@ class Dashboard_model extends CI_Model
     public function getEphytoIn()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, kota_tuju, data_from')
+            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, kota_tuju, data_from, id_hub, moda, nama_angkut, no_angkut, xmlsigned')
             ->from('ephyto_in')
             ->order_by('tgl_cert', 'DESC')
             ->get();
@@ -68,13 +68,13 @@ class Dashboard_model extends CI_Model
     public function getEcertOut()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to')
-            ->from('ecert_out')
+            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, no_reg, pn_pelepasan_id, no_seri, xml')
+            ->from('eah_out')
             ->order_by('tgl_cert', 'DESC')
             ->get();
 
         return [
-            'total_data' => $this->db->count_all('ecert_out'),
+            'total_data' => $this->db->count_all('eah_out'),
             'data' => $query->result_array()
         ];
     }
@@ -82,7 +82,7 @@ class Dashboard_model extends CI_Model
     public function getEphytoOut()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to')
+            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, id_hub, pn_pelepasan_id, no_reg, no_seri, xml')
             ->from('ephyto_out')
             ->order_by('tgl_cert', 'DESC')
             ->get();

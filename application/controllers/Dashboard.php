@@ -37,14 +37,14 @@ class Dashboard extends RestController
 
         $ecert_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_in');
         $ephyto_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_in');
-        $ecert_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_out');
+        $eah_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('eah_out');
         $ephyto_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_out');
 
         $response = [
             'year' => $year,
             'ecert_in' => $ecert_in,
             'ephyto_in' => $ephyto_in,
-            'ecert_out' => $ecert_out,
+            'eah_out' => $eah_out,
             'ephyto_out' => $ephyto_out
         ];
 
@@ -72,8 +72,8 @@ class Dashboard extends RestController
                 $table = 'ephyto_in';
                 $negField = 'neg_asal';
                 break;
-            case 'ecertout':
-                $table = 'ecert_out';
+            case 'eahout':
+                $table = 'eah_out';
                 $negField = 'neg_tuju';
                 break;
             case 'ephytoout':
