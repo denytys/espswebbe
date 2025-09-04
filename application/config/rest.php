@@ -664,7 +664,7 @@ $config['allow_any_cors_domain'] = true;
 | e.g. $config['allowed_origins'] = ['http://www.example.com', 'https://spa.example.com']
 |
 */
-$config['allowed_cors_origins'] = ['http://localhost:5173'];
+$config['allowed_cors_origins'] = [];
 
 /*
 |--------------------------------------------------------------------------
@@ -685,6 +685,6 @@ $config['allowed_cors_origins'] = ['http://localhost:5173'];
 | http://docs.sencha.com/extjs/6.5.2/classic/Ext.data.proxy.Rest.html#cfg-withCredentials
 |
 */
-// $config['forced_cors_headers'] = [
-//     'Access-Control-Allow-Credentials' => 'true'
-// ];
+$config['forced_cors_headers'] = [
+    'Access-Control-Allow-Credentials' => 'true'
+];
