@@ -15,8 +15,15 @@ $route['users/(:any)']['DELETE']   = 'users/destroy/$1'; // hapus user
 
 $route['incoming/ecertin']['GET'] = 'incoming/ecertin';
 $route['incoming/ephytoin']['GET'] = 'incoming/ephytoin';
-$route['outgoing/ecertout']['GET'] = 'outgoing/ecertout';
+$route['incoming/ecertin/(:any)/xmlsigned'] = 'incoming/ecertin_xmlsigned/$1';
+$route['incoming/ephytoin/(:any)/xmlsigned'] = 'incoming/ephytoin_xmlsigned/$1';
+
+$route['outgoing/eahout']['GET'] = 'outgoing/eahout';
 $route['outgoing/ephytoout']['GET'] = 'outgoing/ephytoout';
+$route['outgoing/eahout/(:any)/xml']['GET'] = 'outgoing/eahout_xml/$1';
+$route['outgoing/ephytoout/(:any)/xml']['GET'] = 'outgoing/ephytoout_xml/$1';
+
+
 $route['dashboard/stats']['GET'] = 'dashboard/stats';
 $route['dashboard/tabledata']['GET'] = 'dashboard/tabledata';
 $route['dashboard/monthly']['GET'] = 'dashboard/monthly';

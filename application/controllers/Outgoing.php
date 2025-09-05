@@ -28,9 +28,9 @@ class Outgoing extends RestController
         $this->user = $decoded;
     }
 
-    public function ecertout_get()
+    public function eahout_get()
     {
-        $response = $this->Dashboard_model->getEcertOut();
+        $response = $this->Dashboard_model->getEahOut();
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
@@ -42,5 +42,35 @@ class Outgoing extends RestController
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($response));
+    }
+
+    public function eahout_xml_get($id_cert)
+    {
+        $row = $this->db->select('xml')
+            ->from('eah_out')
+            ->where('id_cert', $id_cert)
+            ->get()
+            ->row();
+
+        if ($row) {
+            $this->response(['xml' => $row->xml], 200);
+        } else {
+            $this->response(['status' => false, 'message' => 'Data not found'], 404);
+        }
+    }
+
+    public function ephytoout_xml_get($id_cert)
+    {
+        $row = $this->db->select('xml')
+            ->from('ephyto_out')
+            ->where('id_cert', $id_cert)
+            ->get()
+            ->row();
+
+        if ($row) {
+            $this->response(['xml' => $row->xml], 200);
+        } else {
+            $this->response(['status' => false, 'message' => 'Data not found'], 404);
+        }
     }
 }

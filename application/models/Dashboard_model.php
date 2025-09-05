@@ -40,7 +40,7 @@ class Dashboard_model extends CI_Model
     public function getEcertIn()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, tujuan, id_cert, xmlsigned')
+            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, tujuan, id_cert')
             ->from('ecert_in')
             ->order_by('tgl_cert', 'DESC')
             ->get();
@@ -54,7 +54,7 @@ class Dashboard_model extends CI_Model
     public function getEphytoIn()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, kota_tuju, data_from, id_hub, moda, nama_angkut, no_angkut, xmlsigned')
+            ->select('tgl_cert, no_cert, doc_type, komo_eng, port_asal, neg_asal, port_tuju, kota_tuju, data_from, id_hub, moda, nama_angkut, no_angkut')
             ->from('ephyto_in')
             ->order_by('tgl_cert', 'DESC')
             ->get();
@@ -65,10 +65,10 @@ class Dashboard_model extends CI_Model
         ];
     }
 
-    public function getEcertOut()
+    public function getEahOut()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, no_reg, pn_pelepasan_id, no_seri, xml')
+            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, no_reg, pn_pelepasan_id, no_seri')
             ->from('eah_out')
             ->order_by('tgl_cert', 'DESC')
             ->get();
@@ -82,7 +82,7 @@ class Dashboard_model extends CI_Model
     public function getEphytoOut()
     {
         $query = $this->db
-            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, id_hub, pn_pelepasan_id, no_reg, no_seri, xml')
+            ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to, id_cert, id_hub, pn_pelepasan_id, no_reg, no_seri')
             ->from('ephyto_out')
             ->order_by('tgl_cert', 'DESC')
             ->get();
