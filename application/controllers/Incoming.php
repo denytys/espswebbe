@@ -12,6 +12,7 @@ class Incoming extends RestController
     {
         parent::__construct();
         $this->load->model('Dashboard_model');
+        $this->load->model('M_inout');
         $this->load->helper('jwt');
 
         $authHeader = $this->input->get_request_header("Authorization");
@@ -46,42 +47,21 @@ class Incoming extends RestController
 
     public function ecertin_xmlsigned_get($id_cert)
     {
-        $row = $this->db->select('xmlsigned')
-            ->from('ecert_in')
-            ->where('id_cert', $id_cert)
-            ->get()
-            ->row();
-
+        $row = $this->M_inout->getXmlEcertIn($id_cert);
         if ($row) {
-            $this->response([
-                'id_cert' => $id_cert,
-                'xmlsigned' => $row->xmlsigned
-            ], 200);
+            $this->response(['id_cert' => $id_cert, 'xmlsigned' => $row->xmlsigned], 200);
         } else {
-            $this->response([
-                'status' => false,
-                'message' => 'Data not found'
-            ], 404);
+            $this->response(['status' => false, 'message' => 'Data not found'], 404);
         }
     }
+
     public function ephytoin_xmlsigned_get($id_hub)
     {
-        $row = $this->db->select('xmlsigned')
-            ->from('ephyto_in')
-            ->where('id_hub', $id_hub)
-            ->get()
-            ->row();
-
+        $row = $this->M_inout->getXmlEphytoIn($id_hub);
         if ($row) {
-            $this->response([
-                'id_hub' => $id_hub,
-                'xmlsigned' => $row->xmlsigned
-            ], 200);
+            $this->response(['id_hub' => $id_hub, 'xmlsigned' => $row->xmlsigned], 200);
         } else {
-            $this->response([
-                'status' => false,
-                'message' => 'Data not found'
-            ], 404);
+            $this->response(['status' => false, 'message' => 'Data not found'], 404);
         }
     }
 }

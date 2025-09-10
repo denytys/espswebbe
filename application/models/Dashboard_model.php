@@ -3,7 +3,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Dashboard_model extends CI_Model
 {
-    //grafik bulanan
+    // Hitung total data per tahun
+    public function get_yearly_stats($year)
+    {
+        return [
+            'ecert_in'   => $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_in'),
+            'ephyto_in'  => $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_in'),
+            'eah_out'    => $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('eah_out'),
+            'ephyto_out' => $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_out'),
+        ];
+    }
+
+    // Grafik bulanan
     public function get_monthly_data($type, $year)
     {
         switch ($type) {
@@ -37,6 +48,41 @@ class Dashboard_model extends CI_Model
             ->result_array();
     }
 
+    // Data negara per jenis
+    public function get_table_data($type, $year)
+    {
+        switch ($type) {
+            case 'ecertin':
+                $table = 'ecert_in';
+                $negField = 'neg_asal';
+                break;
+            case 'ephytoin':
+                $table = 'ephyto_in';
+                $negField = 'neg_asal';
+                break;
+            case 'eahout':
+                $table = 'eah_out';
+                $negField = 'neg_tuju';
+                break;
+            case 'ephytoout':
+                $table = 'ephyto_out';
+                $negField = 'neg_tuju';
+                break;
+            default:
+                return [];
+        }
+
+        return $this->db
+            ->select("$negField AS negara, COUNT(*) AS jumlah")
+            ->from($table)
+            ->where("YEAR(tgl_cert)", $year)
+            ->group_by($negField)
+            ->order_by('jumlah', 'DESC')
+            ->get()
+            ->result_array();
+    }
+
+    // Detail data untuk tiap jenis
     public function getEcertIn()
     {
         $query = $this->db
@@ -47,7 +93,7 @@ class Dashboard_model extends CI_Model
 
         return [
             'total_data' => $this->db->count_all('ecert_in'),
-            'data' => $query->result_array()
+            'data'       => $query->result_array()
         ];
     }
 
@@ -61,7 +107,7 @@ class Dashboard_model extends CI_Model
 
         return [
             'total_data' => $this->db->count_all('ephyto_in'),
-            'data' => $query->result_array()
+            'data'       => $query->result_array()
         ];
     }
 
@@ -75,7 +121,7 @@ class Dashboard_model extends CI_Model
 
         return [
             'total_data' => $this->db->count_all('eah_out'),
-            'data' => $query->result_array()
+            'data'       => $query->result_array()
         ];
     }
 
@@ -89,7 +135,7 @@ class Dashboard_model extends CI_Model
 
         return [
             'total_data' => $this->db->count_all('ephyto_out'),
-            'data' => $query->result_array()
+            'data'       => $query->result_array()
         ];
     }
 }

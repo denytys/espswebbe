@@ -12,6 +12,7 @@ class Outgoing extends RestController
     {
         parent::__construct();
         $this->load->model('Dashboard_model');
+        $this->load->model('M_inout');
         $this->load->helper('jwt');
 
         $authHeader = $this->input->get_request_header("Authorization");
@@ -46,12 +47,7 @@ class Outgoing extends RestController
 
     public function eahout_xml_get($id_cert)
     {
-        $row = $this->db->select('xml')
-            ->from('eah_out')
-            ->where('id_cert', $id_cert)
-            ->get()
-            ->row();
-
+        $row = $this->M_inout->getXmlEahOut($id_cert);
         if ($row) {
             $this->response(['xml' => $row->xml], 200);
         } else {
@@ -61,12 +57,7 @@ class Outgoing extends RestController
 
     public function ephytoout_xml_get($id_cert)
     {
-        $row = $this->db->select('xml')
-            ->from('ephyto_out')
-            ->where('id_cert', $id_cert)
-            ->get()
-            ->row();
-
+        $row = $this->M_inout->getXmlEphytoOut($id_cert);
         if ($row) {
             $this->response(['xml' => $row->xml], 200);
         } else {

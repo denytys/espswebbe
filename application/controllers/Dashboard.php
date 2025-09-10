@@ -20,6 +20,7 @@ class Dashboard extends RestController
             $this->response(["status" => false, "message" => "Unauthorized"], RestController::HTTP_UNAUTHORIZED);
             exit;
         }
+
         $jwt = str_replace("Bearer ", "", $authHeader);
         $decoded = validateJWT($jwt);
         if (!$decoded) {
@@ -29,96 +30,41 @@ class Dashboard extends RestController
         $this->user = $decoded;
     }
 
-
     // GET /dashboard/stats
     public function stats_get()
     {
-        $year = date('Y'); // auto tahun kiye bae
+        $year = date('Y');
+        $stats = $this->dashboard_model->get_yearly_stats($year);
 
-        $ecert_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_in');
-        $ephyto_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_in');
-        $eah_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('eah_out');
-        $ephyto_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_out');
-
-        $response = [
-            'year' => $year,
-            'ecert_in' => $ecert_in,
-            'ephyto_in' => $ephyto_in,
-            'eah_out' => $eah_out,
-            'ephyto_out' => $ephyto_out
-        ];
-
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($response));
+        $response = array_merge(['year' => $year], $stats);
+        return $this->response($response, RestController::HTTP_OK);
     }
-
 
     // GET /dashboard/tabledata?type=ecertin
     public function tabledata_get()
     {
         $type = $this->input->get('type');
-        $table = '';
-        $negField = '';
-        $dateField = 'tgl_cert';
-        $year = date('Y'); // auto tahun kiye bae
+        $year = date('Y');
 
-        switch ($type) {
-            case 'ecertin':
-                $table = 'ecert_in';
-                $negField = 'neg_asal';
-                break;
-            case 'ephytoin':
-                $table = 'ephyto_in';
-                $negField = 'neg_asal';
-                break;
-            case 'eahout':
-                $table = 'eah_out';
-                $negField = 'neg_tuju';
-                break;
-            case 'ephytoout':
-                $table = 'ephyto_out';
-                $negField = 'neg_tuju';
-                break;
-            default:
-                show_404();
-                return;
+        $result = $this->dashboard_model->get_table_data($type, $year);
+        if (empty($result)) {
+            return $this->response(["message" => "Invalid type"], RestController::HTTP_BAD_REQUEST);
         }
 
-        $result = $this->db
-            ->select("$negField AS negara, COUNT(*) AS jumlah")
-            ->from($table)
-            ->where("YEAR($dateField)", $year) // filter tahun
-            ->group_by($negField)
-            ->order_by('jumlah', 'DESC')
-            ->get()
-            ->result_array();
-
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($result));
+        return $this->response($result, RestController::HTTP_OK);
     }
 
-
-
-    // dashboard
+    // GET /dashboard/monthly?type=ecertin&year=2025
     public function monthly_get()
     {
         $type = $this->input->get('type');
         $year = $this->input->get('year');
 
         if (!$type || !$year) {
-            return $this->output
-                ->set_status_header(400)
-                ->set_content_type('application/json')
-                ->set_output(json_encode(["message" => "type dan year wajib diisi"]));
+            return $this->response(["message" => "type dan year wajib diisi"], RestController::HTTP_BAD_REQUEST);
         }
 
-        // Ambil data dari model
         $result = $this->dashboard_model->get_monthly_data($type, $year);
-
-        return $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($result));
+        return $this->response($result, RestController::HTTP_OK);
     }
 }
