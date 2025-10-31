@@ -30,3 +30,5 @@ $route['dashboard/monthly']['GET'] = 'dashboard/monthly';
 
 $route['countryset'] = 'countryset/index';
 $route['countryset/(:num)'] = 'countryset/index/$1';
+
+$route['assistant']['GET'] = 'Assistant/index';
