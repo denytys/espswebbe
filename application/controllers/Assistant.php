@@ -25,12 +25,10 @@ class Assistant extends RestController
             ], RestController::HTTP_BAD_REQUEST);
         }
 
-        // Normalisasi pertanyaan ke huruf kecil semua
         $q_lower = strtolower($question);
 
-        // Deteksi pertanyaan identitas asisten
         if (preg_match('/(siapa.*kamu|kamu.*siapa|siapa.*anda|anda.*siapa)/', $q_lower)) {
-            $answer = "Perkenalkan saya assistant yang akan membantu anda terkait esps. ada yang bisa saya bantu yang mulia?";
+            $answer = "Perkenalkan saya assistant yang akan membantu anda mengenai esps. ada yang bisa saya bantu yang mulia?";
             return $this->response([
                 'status' => true,
                 'message' => 'Jawaban dari lokal.',
@@ -38,7 +36,6 @@ class Assistant extends RestController
             ], RestController::HTTP_OK);
         }
 
-        // Deteksi sapaan ringan
         if (preg_match('/\b(hai|halo|helo|pagi|siang|sore|malam|terima kasih|makasih|thanks)\b/', $q_lower)) {
             if (preg_match('/(terima kasih|makasih|thanks)/', $q_lower)) {
                 $answer = "Sama-sama! Senang bisa membantu 😊";
@@ -61,7 +58,6 @@ class Assistant extends RestController
             ], RestController::HTTP_OK);
         }
 
-        // Cek apakah pertanyaan tentang eCert/ePhyto
         if (
             strpos($q_lower, 'ecert') !== false ||
             strpos($q_lower, 'e-phyto') !== false ||
@@ -69,11 +65,10 @@ class Assistant extends RestController
         ) {
             $answer = $this->assistant->process_question($question);
         } else {
-            // Pertanyaan umum → arahkan ke Gemini AI
+
             $answer = $this->ask_gemini($question);
         }
 
-        // Response standar
         $this->response([
             'status' => true,
             'message' => 'Jawaban ditemukan.',
@@ -119,8 +114,7 @@ class Assistant extends RestController
         $data = json_decode($response, true);
 
         if ($http_code !== 200) {
-            $msg = isset($data['error']['message']) ? $data['error']['message'] : 'Tidak diketahui';
-            return "Gagal mendapatkan jawaban dari Gemini (HTTP $http_code): $msg";
+            return "Gagal mendapatkan jawaban dari suhunya suhu (HTTP $http_code)";
         }
 
         if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
